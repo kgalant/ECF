@@ -5,10 +5,10 @@
 class CampaignServiceTest {
 
 	// Test exsisting member of a Programme is added to a new event
-	@isTest static void testAddMembersToProgramEvent() {
-		Campaign programme = CampaignTestDataFactory.createProgramme();
-		Campaign event = CampaignTestDataFactory.createProgramEvent(programme);
-		CampaignService.addMembersToProgramEvent(programme, event);  
+	@isTest static void testAddMembersToProgramEvents() {
+	//	Campaign programme = CampaignTestDataFactory.createProgramme();
+	//	Campaign event = CampaignTestDataFactory.createProgramEvent(programme);
+		CampaignService.addMembersToProgramEvents(null);
 		
 		System.assert(false);
 	} 
