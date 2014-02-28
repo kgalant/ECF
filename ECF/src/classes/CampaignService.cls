@@ -22,22 +22,25 @@ public with sharing class CampaignService {
 		// List of the new CampaignMembers attached to events
 		List<CampaignMember> newMembersForProgramEvents  = new List<CampaignMember>();
 		
-		// Get the parent Programmes for all Program Events
-		Map<Id, Campaign> programmes = getParentProgrammes(events);
-		
-		// Loop through all Programme Events, look up the parent Programme
-		// matching the event record's parent id, extract the members for
-		// the parent and assign them to the new event
-		for (Campaign c : events) {
-			// Filter out any unwanted Campaign types
-			if (isProgrammeEvent(c)) {
-				Campaign parent = programmes.get(c.ParentId);
-				System.debug('Found parent ' + parent + ' for event ' + c);
-				List<CampaignMember> members = parent.CampaignMembers;
-				for (CampaignMember m : members) {
-					newMembersForProgramEvents.add(createMemberForEvent(c, m));
-				}			
-			}
+		// Loop through the events list if any are submitted
+		if (events != null && events.size() > 0) {
+			// Get the parent Programmes for all Program Events
+			Map<Id, Campaign> programmes = getParentProgrammes(events);
+			
+			// Loop through all Programme Events, look up the parent Programme
+			// matching the event record's parent id, extract the members for
+			// the parent and assign them to the new event
+			for (Campaign c : events) {
+				// Filter out any unwanted Campaign types
+				if (isProgrammeEvent(c)) {
+					Campaign parent = programmes.get(c.ParentId);
+					System.debug('Found parent ' + parent + ' for event ' + c);
+					List<CampaignMember> members = parent.CampaignMembers;
+					for (CampaignMember m : members) {
+						newMembersForProgramEvents.add(createMemberForEvent(c, m));
+					}			
+				}
+			}	
 		}
 	
 		// Insert the new members created for the new events if any were collected
