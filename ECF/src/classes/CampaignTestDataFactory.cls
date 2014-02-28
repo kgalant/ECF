@@ -129,17 +129,15 @@ public class CampaignTestDataFactory {
 	}
 	
 	/**
-	 * Create a Program Event for the parent Programme.
-	 
-	public static Campaign createProgramEvent(Campaign parent) {
+	 * Creates a new Program Event with no members as a child of the parent Programme.
+	 */
+	public static Campaign createProgramEvent(Campaign programme) {
 		Campaign programEvent = new Campaign();
-		// Set the parent Programme for this instance
-		programEvent.ParentId = parent.Id;
-		// Set the RecordTypeId
-		programEvent.RecordTypeId = getRecordTypeInfoForProgramEvent().getRecordTypeId();
+		programEvent.ParentId = programme.Id;
+		programEvent.RecordTypeId = CampaignService.CAMPAIGN_FILTER_ID;
 		return programEvent;
 	}
-	*/
+
 	/*
 	public static List<CampaignMember> getMembers(Campaign campaign) {
 		List<CampaignMember> members = [SELECT ContactId FROM CampaignMember WHERE CampaignId = :campaign.Id];
