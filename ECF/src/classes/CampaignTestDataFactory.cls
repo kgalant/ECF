@@ -1,6 +1,7 @@
 /**
  * This class contains utilities for testing the Campaign object.
  */
+ @isTest
 public class CampaignTestDataFactory {
 	
 	private static Map<String,Schema.RecordTypeInfo> typesByName = null;
@@ -28,7 +29,7 @@ public class CampaignTestDataFactory {
 		for (Integer p = 0; p < numOfProgrammes; p++) {
 
 			// create programme
-			allProgrammes.add(createProgramme(null, null, null, false,'Programme', null));
+			allProgrammes.add(createProgramme(null, null, null, false,'Programme', null,'B001'));
 			
 		}
 		
@@ -41,7 +42,7 @@ public class CampaignTestDataFactory {
 
 			// create sub-events
 			for (Integer e = 0; e < eventsPerProgramme; e++) {
-				allEvents.add(createProgramme(null, null, null, false,'Programme Event', p.Id));
+				allEvents.add(createProgramme(null, null, null, false,'Programme Event', p.Id,'B001'));
 			}
 			
 		}
@@ -91,7 +92,7 @@ public class CampaignTestDataFactory {
 		return allProgrammes;
 	}
 	
-	private static CampaignMember getCampaignMember(Id contactId, Id campaignId) {
+	public static CampaignMember getCampaignMember(Id contactId, Id campaignId) {
 		CampaignMember cm = new CampaignMember();
 		cm.ContactId = contactId;
 		cm.CampaignId = campaignId;
@@ -101,7 +102,7 @@ public class CampaignTestDataFactory {
 	/**
 	 * Creates a Programme type Campaign.
 	 */
-	public static Campaign createProgramme(String baseName, Date startDate, Date endDate, boolean doInsert, String programmeType, Id parent) {
+	public static Campaign createProgramme(String baseName, Date startDate, Date endDate, boolean doInsert, String programmeType, Id parent, String branch) {
 		if (baseName == null)
 			baseName = 'Dummy Campaign';
 		if (startDate == null)
@@ -110,10 +111,13 @@ public class CampaignTestDataFactory {
 			endDate = startDate + 100;
 		if (doInsert == null)
 			doInsert = false;
+		if (branch == null)
+			branch = 'B002';
 		Campaign programme = new Campaign();
 		programme.Name = baseName + String.valueOf(System.now());
 		programme.StartDate = startDate;
 		programme.EndDate = endDate;
+		programme.Branch__c = CampaignTestsCommon.getBranchCustomIdByName(branch);
 		if (programmeType == 'Programme') {
 			programme.RecordTypeId = getRecordTypeInfoForProgramme().getRecordTypeId();
 		} else if (programmeType == 'Programme Event') {
@@ -177,7 +181,7 @@ public class CampaignTestDataFactory {
 		return typesByName.get(type);
 	}
 	
-	private static Contact getContact(String lastName, String branch, boolean doInsert) {
+	public static Contact getContact(String lastName, String branch, boolean doInsert) {
 		if (doInsert == null) 
 			doInsert = false;
 		if (branch == null) 
@@ -187,7 +191,7 @@ public class CampaignTestDataFactory {
 		
 		Contact c = new Contact();
 		c.LastName = lastname + ' ' + String.valueOf(System.now());
-		c.Branch__c = branch;
+		c.Branch__c = CampaignTestsCommon.getBranchCustomIdByName(branch);
 		
 		if (doInsert) {
 			insert c;
